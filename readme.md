@@ -1,7 +1,7 @@
 ## These are codes record for Graduate Research Assistant Job in Mccombs Business School in The University of Texas in Austin
 
-Author: ##zhenkai(Kay) wang
-#Spider_mentor Project:
+## Author: ##zhenkai(Kay) wang
+## Spider_mentor Project:
 Develop crawler using Scarpy to iteratively crawl down table information for Wifi WiMax data
 
 1. [802.11 after 2000](https://mentor.ieee.org/802.11/documents)
@@ -20,11 +20,11 @@ scrapy crawl mentor -o 80211_mentor_1to22.csv
 scrapy crawl grouperNew -o grouper_1990to1996.csv
 scrapy crawl grouper2 -o grouper_1997to2000.csv
 
-#Author Information Extraction Project
+## Author Information Extraction Project
 Use regular expression to extract author and affiliation in messy data format
 
 
-#Technical Terms to Frequencey Project
+## Technical Terms to Frequencey Project
 Use pattern matching to extract technical terms in documents, store with pickle library for usage in LDA model
 
 
