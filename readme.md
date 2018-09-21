@@ -1,4 +1,4 @@
-## These are codes record for Graduate Research Assistant Job in Mccombs Business School in The University of Texas in Austin
+These are codes record for Graduate Research Assistant Job in Mccombs Business School in The University of Texas in Austin
 
 ## Author: ##zhenkai(Kay) wang
 ## Spider_mentor Project:
