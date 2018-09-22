@@ -1,19 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Sep 18 23:14:18 2018
-
-@author: Administrator
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Sep 15 21:47:49 2018
-
-@author: Zhenkai Wang
-"""
-#this code is used for extracting 
-
-#this code is to use pattern matching and dictionary matching to find out the all the technical terms in documents
 import fitz, re, os, pickle, multiprocessing
 #import nltk
 from nltk import word_tokenize, pos_tag, ne_chunk, chunk
@@ -27,12 +11,11 @@ from functools import partial
 numCount = 0
 path1 = "F:\\WireLessNLPGRA\\code\\NamedEntityRecognition\\some_proposal\\C802162a-01_01.pdf"
 path2 = "F:\\WireLessNLPGRA\\code\\NamedEntityRecognition\\some_proposal\\C802162a-01_06.pdf"
-techTermPath1 = "word_list1"
-techTermPath2 = "word_list2"
-techTermPath3 = "word_list3"
-techTermPath4 = "word_list4"
+techTermPath = "words"
+dictPath = "dict"
 pdfDir =  "F:\\WireLessNLPGRA\\80216CompProj"
-
+from fileProcessing import *
+from techTermProcessing import *
 
 def getPage(path):
     #get all the pages of file, return a list of string, each string is content of one page
@@ -78,7 +61,7 @@ def getTechTerms(words, listOfTechTerm):
             if word == term:
                 isTerm = True
             splited_terms = term.split()
-            
+
             if len(splited_terms) > 1:
                 isEqual = True
                 for idx in range(len(splited_terms)):
@@ -87,12 +70,12 @@ def getTechTerms(words, listOfTechTerm):
                     if (words[i + idx] != splited_terms[idx]):
                         isEqual = False
                 if (isEqual):
-                    result.append(term)       
-                
-            
-            
-                
-                
+                    result.append(term)
+
+
+
+
+
         if (isTerm):
             result.append(word)
 #        elif (len(word) > 1):
@@ -106,7 +89,7 @@ def getTechTerms(words, listOfTechTerm):
 #                    result.append(word)
     #delete stopword
     stopWords = getStopWords()
-    wordsFiltered = [] 
+    wordsFiltered = []
     for w in result:
         if w not in stopWords:
             wordsFiltered.append(w)
@@ -123,7 +106,7 @@ def hasCharDig(word):
             hasWord = True
     return hasChar & hasWord
 def getListOfTechTerms(dictAbb, *paths):
-    
+
     try:
         with open("techTerms.dat", "rb") as f:
             technicalWords = pickle.load(f)
@@ -156,7 +139,7 @@ def getContent(textPath):
         words += [word.strip(string.punctuation) for word in re.split(r'\s|\n', sent)]
     #delete stopword
 #     stopWords = set(stopwords.words('english'))
-#     wordsFiltered = [] 
+#     wordsFiltered = []
 #     for w in words:
 #        if w not in stopWords:
 #            wordsFiltered.append(w)
@@ -171,7 +154,7 @@ def wordListToFreqDict(wordList):
 def getFreqDict(filePath, listOfTechTerms):
     wordsFiltered = getContent(filePath)
     #print(wordsFiltered)
-    
+
     #listOfTechTerms.append("Recommended Practice")#just a test
     potentialTechTerms = getTechTerms(wordsFiltered, listOfTechTerms)
 #    print(potentialTechTerms)
@@ -180,7 +163,7 @@ def getFreqDict(filePath, listOfTechTerms):
 def getAllFiles(dirPath):
 #    print(os.listdir(dirPath))
     files = [os.path.join(dirPath, f) for f in os.listdir(dirPath)]
-    
+
     files = list(filter(lambda f: f.endswith(('.pdf', '. PDF')), files))
     print("total number of pdf files under directory: ", len(files))
     goodFiles = []
@@ -195,7 +178,7 @@ def getAllFiles(dirPath):
     return goodFiles
 
 def getAllDicts(files, listOfTechTerms, numFile):
-    
+
     listOfDicts = []
     count = 0
     for file in files:
@@ -207,13 +190,13 @@ def getAllDicts(files, listOfTechTerms, numFile):
             pass
         if (count >= numFile):
             break
-                
+
     return listOfDicts
 
 def getList(file, listOfTechTerms, dictAbb):
     global numCount
     listOfWords = []
-    
+
     try:
         wordsFiltered = getContent(file)
         techTerms = getTechTerms(wordsFiltered, listOfTechTerms)
@@ -242,18 +225,19 @@ def getDictOfAbb(*paths):
 #     for key, value in dictAbb.iteritems():
     for i in range(len(l)):
         dictAbb[l[i][0]] = l[i][1].lower()
-        
+
     return dictAbb
 from itertools import product
 if __name__ == "__main__":
     #prepocessing
-    dictAbb1 = getDictOfAbb(techTermPath2, techTermPath3)
-    listOfTechTerms1 = getListOfTechTerms(dictAbb1, techTermPath1, techTermPath4)#here it can take as much doc as possible
+    dictAbb1 = getDictOfAbb(dictPath)
+    listOfTechTerms1 = getListOfTechTerms(dictAbb1, techTermPath)#here it can take as much doc as possible
     print("finish loading")
     #get all the files
-    numFile = 200
     minCount = 5
-    fileNames = getAllFiles(pdfDir)[:numFile];
+    numFile = 500;
+    fileNames = getSelectedFileNames(pdfDir, 0, 500);
+    print("start parallal processing")
     np = 16
     p = multiprocessing.Pool(np)
     output = p.map(partial(getList, listOfTechTerms = listOfTechTerms1, dictAbb = dictAbb1),  [file for file in fileNames])
@@ -271,14 +255,12 @@ if __name__ == "__main__":
     featureName = vec.get_feature_names()
 #    print(wordFreqArray)
 #    print(featureName)
-    keyWord = "_minDf_5"
+    keyWord = "file_" + numFile + "_minDf_" + str(minCount) + "_"
     pickle.dump(fileNames, open(keyWord + "fileNames.dat", "wb"))
     pickle.dump(wordFreqArray, open(keyWord + "wordFreqArray.dat", "wb"))
     pickle.dump(featureName, open(keyWord + "featureName.dat", "wb"))
     
     
-    
-    
-    
-    
-    
+    pickle.dump(fileNames, open("fileNames.dat", "wb"))
+    pickle.dump(wordFreqArray, open("wordFreqArray.dat", "wb"))
+    pickle.dump(featureName, open("featureName.dat", "wb"))
