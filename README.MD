@@ -1,5 +1,5 @@
 ## Automatic Code for LDAModel in 80211/80216 WIFI/WIMAX Technology Trends Analysis Program
-This package of codes is used for processing the technical files in 80211 mentor and 80216 completed projects.
+The automatic_code package of codes is used for processing the technical files in 80211 mentor and 80216 completed projects.
 
 ### Date collection:
 We use python library to extract the content from diffrent kinds of files, including pdf, ppt, pptx, doc, docx, and build up a <filename- content> dictionary for preprocessing.
