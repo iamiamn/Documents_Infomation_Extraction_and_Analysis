@@ -18,7 +18,7 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from functools import partial
 import warnings
-
+import pandas as pd
 
 def getStopWords():
 # =============================================================================
@@ -205,6 +205,24 @@ def getDictOfAbb(*paths):
 
     return dictAbb
 def filterFunc(l):
-    filterList = set(pickle.load(open("./Resource/wordsNeedToBeFiltered.dat", "rb")))
+    global filterList
     wl=[w for w in l if len(w) > 1 and not w in filterList]
     return wl
+def updateFilterWords():
+    df = pd.read_excel("./Resource/filterCandidiate.xlsx", index_col = None, header = None)
+    allWords =list(set(df[0]))
+    words = []
+    #filter out null
+    for w in allWords:
+        try:
+            if len(w)>1:
+                words.append(w)
+        except:
+            continue
+    len(words)
+    wordsNeed2Filter = [df[0][i] for i in range(len(df[0])) if df[1][i] == 1 ]
+    wordsNeed2Filter += ["IEEE", "ON", "DOWN", "THIS", "THAT"]
+    wordsNeed2Filter += [chr(i) for i in range(97,123)]
+    wordsNeed2Filter += [chr(i) for i in range(65, 91)]
+    wordsNeed2Filter = set(wordsNeed2Filter)
+    pickle.dump(wordsNeed2Filter, open("wordsNeedToBeFiltered.dat", "wb"))
