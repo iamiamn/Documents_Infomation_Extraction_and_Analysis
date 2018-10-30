@@ -1,6 +1,11 @@
-These are codes record for Graduate Research Assistant Job in Mccombs Business School in The University of Texas in Austin
+### These are codes record for Graduate Research Assistant Job in Mccombs Business School in The University of Texas in Austin
 
 ## Author: ##zhenkai(Kay) wang
+## Automatic_code Project:
+This project is done by myself after nearly two months of works. I am try to re-organize all the codes into a single programs.
+Running the following jupyter notebook, we can use the <filename-content> dictionary as input, and apply 5 kinds of filters and selectors to generate the input for LDA model, as well as run the LDA models in parallel mode.
+https://github.com/iamiamn/Documents_Infomation_Extraction_and_Analysis/blob/master/automatic_code/MainProgram_802116.ipynb
+
 ## Spider_mentor Project:
 Develop crawler using Scarpy to iteratively crawl down table information for Wifi WiMax data
 
