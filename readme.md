@@ -2,7 +2,7 @@
 
 ## Author: ##zhenkai(Kay) wang
 ## Automatic_code Project:
-This project is done by myself after nearly two months of works. I am try to re-organize all the codes into a single programs.
+This project is done by myself after nearly two months of works. I re-organized all the previous codes from team into a single program, and trying to combine 5 kinds of filters and selectors, R code/Python code input data generationa module and LDA model module into signle progam. I create several tool functions collections for reusing.
 Running the following jupyter notebook, we can use the <filename-content> dictionary as input, and apply 5 kinds of filters and selectors to generate the input for LDA model, as well as run the LDA models in parallel mode.
 https://github.com/iamiamn/Documents_Infomation_Extraction_and_Analysis/blob/master/automatic_code/MainProgram_802116.ipynb
 
